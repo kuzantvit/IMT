@@ -6,6 +6,6 @@ Get-SCVirtualMachine | ForEach-Object {
 } | Export-Csv -Path "C:\audit_vm\report\vmm_report.csv" -Encoding UTF8
 
 
-#Get-SCVirtualMachine -VMMServer "inf-vmm-ha.infra.clouddc.ru" | select-Object -Property VirtualMachineState, OperatingSystem, VirtualizationPlatform, CreationTime, Name, ComputerNameString, ComputerName
-# Get-SCVirtualMachine -VMMServer "inf-vmm-ha.infra.clouddc.ru" -OnBehalfOfUser "infra\a.kuzmin-adm" -OnBehalfOfUserRole $a
+#Get-SCVirtualMachine -VMMServer "inf-vmm.test.ru" | select-Object -Property VirtualMachineState, OperatingSystem, VirtualizationPlatform, CreationTime, Name, ComputerNameString, ComputerName
+# Get-SCVirtualMachine -VMMServer "inf-vmm.test.ru" -OnBehalfOfUser "domain\admin" -OnBehalfOfUserRole $a
 #$b = Get-Content -Path C:\audit_vm\userrole.txt
