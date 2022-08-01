@@ -17,7 +17,7 @@ import configparser
 
 # Исключения по именам ВМ и папок в которых они находятся добавлены в файл конфигурации, новые данные вносить через запятую без пробела
 config = configparser.ConfigParser()
-config.read(r'G:\Департамент информационной безопасности\14_ОЭСЗИ\1_Отчеты\АУДИТ ВМ\config\config.ini')
+config.read(r'G:\АУДИТ ВМ\config\config.ini')
 try:
     os.remove("U:\\отчеты\\audit_vm_test\\audit_vm.xlsx")
 except:
@@ -175,7 +175,7 @@ def get_data_vsphere(hosts, password, username):
                         vm_saas.append(vm.parent.name)
                         vm_type.append('No specification')
             # Размещение ВМ во отдельные массивы которые пойдут потом во вклдадку Extra
-            elif vm.name is not None and (vm.name in except_vms or vm.parent.name in except_parent_name or host_name=='vc-vdi-p1-01.sib.ru' or host_name == 'vc-vdi-p2-01.sibi.ru' or 'svm-la-hv' in vm.name):
+            elif vm.name is not None and (vm.name in except_vms or vm.parent.name in except_parent_name or host_name=='vc.sib.ru' or host_name == 'vc.sibi.ru' or 'svm-la-hv' in vm.name):
                 vm_name_sheet_2.append(vm.summary.guest.hostName.lower() if vm.summary.guest.hostName is not None else vm.summary.guest.hostName)
                 vm_power_sheet_2.append(vm.summary.runtime.powerState)
                 vm_orig_name_sheet_2.append(vm.name.lower() if vm.name is not None else vm.name)
