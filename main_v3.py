@@ -15,14 +15,14 @@ nb = pynetbox.api(
     token = '1578ba25aa0f7cacb5deeffdf77bf4df82e52fd6'
     )
 nb.http_session = session
-filename_csv_sibin = r'G:\Департамент информационной безопасности\14_ОЭСЗИ\1_Отчеты\Актуализация активов\input files\host_discovery sibin.csv'
-filename_csv_infra = r'G:\Департамент информационной безопасности\14_ОЭСЗИ\1_Отчеты\Актуализация активов\input files\host_discovery_infra.csv'
-file_audit = r'G:\Департамент информационной безопасности\14_ОЭСЗИ\1_Отчеты\Актуализация активов\input files\audit_vm.xlsx'
-filename_siem = r'G:\Департамент информационной безопасности\14_ОЭСЗИ\1_Отчеты\Актуализация активов\input files\siem.csv'
-filename_siem_actives = r'G:\Департамент информационной безопасности\14_ОЭСЗИ\1_Отчеты\Актуализация активов\input files\siem actives.csv'
-filename_siem_src = r'G:\Департамент информационной безопасности\14_ОЭСЗИ\1_Отчеты\Актуализация активов\input files\siem sources.csv'
-filename_tenable_sc = r'G:\Департамент информационной безопасности\14_ОЭСЗИ\1_Отчеты\Актуализация активов\input files\Assets vuln report.csv'
-filename_vmm_report = r'G:\Департамент информационной безопасности\14_ОЭСЗИ\1_Отчеты\Актуализация активов\input files\vmmreport.csv'
+filename_csv_sibin = r'G\input files\host_discovery sibin.csv'
+filename_csv_infra = r'G:input files\host_discovery_infra.csv'
+file_audit = r'G:\input files\audit_vm.xlsx'
+filename_siem = r'G:\input files\siem.csv'
+filename_siem_actives = r'G:\input files\siem actives.csv'
+filename_siem_src = r'G:\input files\siem sources.csv'
+filename_tenable_sc = r'G:\input files\Assets vuln report.csv'
+filename_vmm_report = r'G:\input files\vmmreport.csv'
 sheet_audit= "Main"
 infra_audit_date = input('Введите дату последнего аудита ВМ в инфра формат (хх.хх.хх): ')
 class asset_host_discovery:
@@ -398,7 +398,7 @@ print(len(ip_dict.keys()))
 #save_data_to_excel(ip_dict.ip)
 def save_data_to_cell(ws_name, row, col, var):
     ws_name.cell(row=row, column=col).value = var
-def save_final_data(filename= r'G:\Департамент информационной безопасности\14_ОЭСЗИ\1_Отчеты\Актуализация активов\Report\final.xlsx', sheet_name = 'Main'):
+def save_final_data(filename= r'G:\Актуализация активов\Report\final.xlsx', sheet_name = 'Main'):
     try:
         wb_excel = load_workbook(filename)
     except FileNotFoundError:
