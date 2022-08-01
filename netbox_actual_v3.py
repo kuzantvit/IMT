@@ -21,54 +21,54 @@ VM_URL = '/api/virtualization/virtual-machines/'
 # Маппинг тэгов Netbox и групп активов. 
 TAGS_GROUPS = [
     {
-        'client_tag':'clouddc',
-        'group':'CloudDC', # Это название должно присутствовать в описаниях самой группы и ее вложенных групп
+        'client_tag':'test',
+        'group':'test', # Это название должно присутствовать в описаниях самой группы и ее вложенных групп
         'service':'',
         'domains':[ # Предполагается, что названия групп по доменам соответствуют полю domain
-            {'domain_tag':'clouddc',
-            'domain':'clouddc.ru'},
-			{'domain_tag':'customersclouddcru',
-            'domain':'customers.clouddc.ru'},
-            {'domain_tag':'infra',
-            'domain':'infra.clouddc.ru'},
-			{'domain_tag':'snegirsoftcom',
-            'domain':'snegirsoft.com'},
-            {'domain_tag':'rbsvpro',
-            'domain':'rbsv.pro'},
+            {'domain_tag':'test',
+            'domain':'test'},
+			{'domain_tag':'test',
+            'domain':'test'},
+            {'domain_tag':'test',
+            'domain':'test'},
+			{'domain_tag':'test',
+            'domain':'test'},
+            {'domain_tag':'test',
+            'domain':'test'},
 			{'domain_tag':'infracdc',
-            'domain':'infra.dc1.cdc'},
-			{'domain_tag':'moncdc',
-            'domain':'mon.cdc'},
-			{'domain_tag':'netcdc',
-            'domain':'net.cdc'}
+            'domain':'test'},
+			{'domain_tag':'test',
+            'domain':'test'},
+			{'domain_tag':'test',
+            'domain':'test'}
         ]
     },
     {
-        'client_tag':'sibintek',
-        'group':'СИБИНТЕК', # Это название должно присутствовать в описаниях самой группы и ее вложенных групп
+        'client_tag':'test',
+        'group':'test', # Это название должно присутствовать в описаниях самой группы и ее вложенных групп
         'service':[
            {'svc_tag':'iaas',
-            'svc_group':'СИБИНТЕК / IaaS'},
+            'svc_group':'test'},
             {'svc_tag':'saas',
-            'svc_group':'СИБИНТЕК / SaaS'},
+            'svc_group':'test'},
         ],
         'domains':[ # Предполагается, что названия групп по доменам соответствуют полю domain
-            {'domain_tag':'sibintek',
-            'domain':'sibintek.ru'},
-	    {'domain_tag':'sibinteksoftru',
-            'domain':'sibintek-soft.ru'}
+            {'domain_tag':'test',
+            'domain':'test'},
+	    {'domain_tag':'test',
+            'domain':'test'}
         ]
     }
 ]
 
 #MaxPatrol SIEM connection
 MPSIEM_CONNECTION = { 
-        "core_url": "https://cdc-siem-core01.infra.clouddc.ru",
+        "core_url": "https://test.ru",
         "core_user": "specified in task settings",
         "core_pass": "specified in task settings",
         "auth_type": 0
     }
-MPSIEM_UNMANAGED_ASSETGROUP = 'Common Cloud'
+MPSIEM_UNMANAGED_ASSETGROUP = 'Common test
 
 class AccessDenied(Exception):
     pass
