@@ -29,9 +29,9 @@ except:
 
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
 ssl_context.verify_mode = ssl.CERT_NONE
-hosts = ['vc-res-01.sibintek.ru', 'vc-vdi-p1-01.sibintek.ru', 'vc-vdi-p2-01.sibintek.ru', 'vc-mgmt-01.sibintek.ru']
-#hosts = ['vc-res-01.sibintek.ru', 'vc-mgmt-01.sibintek.ru']
-#hosts = ['vc-mgmt-01.sibintek.ru']
+hosts = ['vc-res-01.test.ru', 'vc-vdi-p1-01', 'vc-vdi-p2-01', 'vc-mgmt-01']
+#hosts = ['vc-res-01.test.ru', 'vc-mgmt-01.test.ru']
+#hosts = ['vc-mgmt-01.test.ru']
 
 # Ввод логина и пароля для подключения к VMware
 
@@ -93,12 +93,7 @@ def get_data_vsphere(hosts, password, username):
     vmm_os_name = []
     vmm_os_name_sheet_2 = []
     '''except_vms = ['NSX_Controller_2762c66b-10e0-4349-94d4-cf3235b09579', 'NSX_Controller_5f8161c4-5fbe-4fb0-a436-b90704fe01e4', 'NSX_Controller_da7667b8-3c9e-48f4-a32e-d4bc236b880d',\
-                  'nsx-mgr-mgmt-01', 'psc-mgmt-01.sibintek.ru', 'vc-mgmt-01.sibintek.ru', 'vrl-cm-01.sibintek.ru', 'usage-meter.sibintek.ru', 'idm-mgr-01.sibintek.ru',\
-                  'idm-mgr-02.sibintek.ru', 'idm-mgr-03.sibintek.ru', 'nsx-mgr-vdi-p2-01', 'nsx-mgr-vdi-p1-01', 'vc-vdi-p2-01.sibintek.ru', 'vc-vdi-p1-01.sibintek.ru',\
-                  'vdi-p2-uag1-01.sibintek.ru', 'vdi-p2-uag2-01.sibintek.ru', 'vdi-p2-uag3-01.sibintek.ru', 'vdi-p1-uag1-01.sibintek.ru', 'vdi-p1-uag2-01.sibintek.ru',\
-                  'vdi-p1-uag3-01.sibintek.ru', 'psc-res-02.sibintek.ru', 'nsx-mgr-res-01', 'psc-res-01.sibintek.ru', 'vc-res-01.sibintek.ru', 'vs-sib-mgt-eps',\
-                  'rds-p1-uag3-01.sibintek.ru', 'rds-p1-uag2-01.sibintek.ru', 'rds-p1-uag1-01.sibintek.ru', 'CLONE-cdc-rdgw-001', 'sib-netapp-dbrk.sibintek.ru', 'vdi-p2-uag1-01.sibintek.ru (new)',\
-                  'sensor.sibintek.ru', 'sensor-prevent.sibintek.ru', 'decryptor.sibintek.ru', 'huntbox.sibintek.ru']
+                  'nsx-mgr-mgmt-01', 'psc-mgmt-01.tets.ru', 'vc-mgmt-01.test.ru', 'vrl-cm-01.test.ru']
     '''
     #Создание массивов с исключениями
     except_vms = config.get('Exceptions', 'vmname').split(',')
@@ -120,10 +115,10 @@ def get_data_vsphere(hosts, password, username):
             pass
 # цикл по выгрузке информации по ВМ, сразу идет удаление домена, создание массива по сервисной модели, исключение делается по ппаке в которой лежит ВМ, её имени, кластеру
         for vm in children: 
-            if vm.name is not None and vm.name not in except_vms and vm.parent.name not in except_parent_name and host_name!='vc-vdi-p1-01.sibintek.ru' and host_name != 'vc-vdi-p2-01.sibintek.ru':
-                vm_name.append(vm.summary.guest.hostName.lower().replace('.sibintek.ru', '').replace('.cosn.cdc', '').replace('.rnbvk.ru', '') if vm.summary.guest.hostName is not None else vm.summary.guest.hostName)
+            if vm.name is not None and vm.name not in except_vms and vm.parent.name not in except_parent_name and host_name!='vc-vdi-p1-01.test.ru' and host_name != 'vc-vdi-p2-01.sibintek.ru':
+                vm_name.append(vm.summary.guest.hostName.lower().replace('.sibintek.ru', '').replace('.test.ru', '').replace('.rnbvk.ru', '') if vm.summary.guest.hostName is not None else vm.summary.guest.hostName)
                 vm_power.append(vm.summary.runtime.powerState)
-                vm_orig_name.append(vm.name.lower().replace('.sibintek.ru', '').replace('.cosn.cdc', '').replace('.rnbvk.ru', '') if vm.name is not None else vm.name)
+                vm_orig_name.append(vm.name.lower().replace('.sibintek.ru', '').replace('.test.ru', '').replace('.rnbvk.ru', '') if vm.name is not None else vm.name)
                 vm_host_name.append(host_name)
                 vm_ip.append(vm.summary.guest.ipAddress)
                 vm_annotation.append(vm.config.annotation)
@@ -136,7 +131,7 @@ def get_data_vsphere(hosts, password, username):
                         vm_saas.append('IaaS')
                         vm_type.append(vm.parent.name)
                         #print('test1')
-                    elif vm.parent.parent.name == 'RDSE (VIEWPLANNER)':
+                    elif vm.parent.parent.name == 'placeholder':
                         vm_saas.append('SaaS')
                         vm_type.append(vm.parent.name)
                         #print('test2')
@@ -144,7 +139,7 @@ def get_data_vsphere(hosts, password, username):
                         vm_saas.append('SaaS')
                         vm_type.append(vm.parent.name)
                         #print('test3')
-                    elif vm.parent.parent.name == 'ViewPlanner':
+                    elif vm.parent.parent.name == 'placeholder':
                         vm_saas.append('SaaS')
                         vm_type.append(vm.parent.name)
                         #print('test4')
@@ -152,15 +147,15 @@ def get_data_vsphere(hosts, password, username):
                         vm_saas.append('SaaS')
                         vm_type.append(vm.parent.name)
                         #print('test5')
-                    elif host_name == 'vc-mgmt-01.sibintek.ru':
+                    elif host_name == 'vc-mgmt-01':
                         vm_saas.append('SaaS')
                         vm_type.append(vm.parent.name)
                         #print('test6')
-                    elif vm.name == 'RaaSExch2012r2':
+                    elif vm.name == 'RaaSExch':
                         vm_saas.append('SaaS')
                         vm_type.append(vm.parent.name)
                         #print('test7')
-                    elif vm.name == 'CDC-DNS-02' or vm.name == 'CDC-DNS-01':
+                    elif vm.name == 'CDC' or vm.name == 'CDC':
                         vm_saas.append('SaaS')
                         vm_type.append(vm.parent.name)
                         #print('test8')
@@ -172,7 +167,7 @@ def get_data_vsphere(hosts, password, username):
                         vm_type.append(vm.parent.name)
                         #print('test9')
                 else:
-                    if host_name == 'vc-mgmt-01.sibintek.ru':
+                    if host_name == 'vc-mgmt':
                         vm_saas.append('SaaS')
                         vm_type.append('No specification')
                         #print('test10')
@@ -180,7 +175,7 @@ def get_data_vsphere(hosts, password, username):
                         vm_saas.append(vm.parent.name)
                         vm_type.append('No specification')
             # Размещение ВМ во отдельные массивы которые пойдут потом во вклдадку Extra
-            elif vm.name is not None and (vm.name in except_vms or vm.parent.name in except_parent_name or host_name=='vc-vdi-p1-01.sibintek.ru' or host_name == 'vc-vdi-p2-01.sibintek.ru' or 'svm-la-hv' in vm.name):
+            elif vm.name is not None and (vm.name in except_vms or vm.parent.name in except_parent_name or host_name=='vc-vdi-p1-01.sib.ru' or host_name == 'vc-vdi-p2-01.sibi.ru' or 'svm-la-hv' in vm.name):
                 vm_name_sheet_2.append(vm.summary.guest.hostName.lower() if vm.summary.guest.hostName is not None else vm.summary.guest.hostName)
                 vm_power_sheet_2.append(vm.summary.runtime.powerState)
                 vm_orig_name_sheet_2.append(vm.name.lower() if vm.name is not None else vm.name)
@@ -416,12 +411,9 @@ def get_data_from_vmmreport(filename='U:\\scripts\\vmmreport.csv'):
             #print(row)
             vmm_name.append(row[Name])
             vmm_dns_name.append(row[dns_name])
-            if row[cloud] in ['Sibintek_ServiceVM', 'Sibintek_RDS',\
-                          'Sibintek_RNBVK', 'COSN_Management', 'Sibintek_NOC',\
-                          'Sibintek_AD', 'Sibintek_DIB', 'COSN_NIX', 'Sibintek_NIX', 'Sibintek_SaaS']:
+            if row[cloud] in ['Test_ServiceVM']:
                 vmm_service.update({row[Name]:'SaaS'})
-            elif row[cloud] in ['Sibintek_IaaS', 'Sibintek_IasS_NIX', 'Sibintek_DIRPP',\
-                             'Sibintek_Zvezda', 'RN-Bitum', 'Sibintek_Invest', 'Sibintek_ITSM', 'Sibintek_1C']:
+            elif row[cloud] in ['SuperIaaS']:
                 vmm_service.update({row[Name]:'IaaS'})
             else:
                 vmm_service.update({row[Name]:'Delete_VM'})
@@ -471,12 +463,9 @@ def get_data_from_vmmreport(filename='U:\\scripts\\vmmreport.csv'):
             vmm_name.append(row[Name])
             vmm_dns_name.append(row[dns_name])
             # Разбиение на СааС и ИааС тачек в косн
-            if row[cloud] in ['Sibintek_ServiceVM', 'Sibintek_RDS',\
-                          'COSN_Management', 'Sibintek_NOC',\
-                          'Sibintek_AD', 'Sibintek_DIB', 'COSN_NIX', 'Sibintek_NIX', 'Sibintek_SaaS']:
+            if row[cloud] in ['Sibi']:
                 vmm_service.append('SaaS')
-            elif row[cloud] in ['Sibintek_IaaS', 'Sibintek_IasS_NIX', 'Sibintek_DIRPP',\
-                             'Sibintek_Zvezda', 'RN-Bitum', 'Sibintek_Invest', 'Sibintek_ITSM', 'Sibintek_1C', 'Sibintek_RNBVK']:
+            elif row[cloud] in ['Sib']:
                 vmm_service.append('IaaS')
             else:
                 vmm_service.append('Delete_VM')
@@ -671,11 +660,11 @@ for i in range(2000):
     count_notprotected += 1 if ws_ksv.cell(row=i+1,column=4).value =='NotProtected' and ws_ksv.cell(row=i+1,column=8).value=='poweredOn' else 0
     
     count_protected_saas_vc_res += 1 if ws_ksv.cell(row=i+1,column=10).value == 'SaaS' and ws_ksv.cell(row=i+1,column=4).value =='Protected' and\
-                                   ws_ksv.cell(row=i+1,column=8).value =='poweredOn' and ws_ksv.cell(row=i+1,column=14).value != 'vc-mgmt-01.sibintek.ru'\
+                                   ws_ksv.cell(row=i+1,column=8).value =='poweredOn' and ws_ksv.cell(row=i+1,column=14).value != 'vc-.'\
                                    and ws_ksv.cell(row=i+1, column=3).fill != fill_cell_yellow_dns and ws_ksv.cell(row=i+1, column=4).fill != fill_cell_yellow  else 0
     count_poweron_saas_vc_res += 1 if ws_ksv.cell(row=i+1,column=10).value == 'SaaS' and ws_ksv.cell(row=i+1,column=8).value =='poweredOn' and ws_ksv.cell(row=i+1,column=14).value != 'vc-mgmt-01.sibintek.ru' else 0
     count_protected_saas_vc_mgmt += 1 if ws_ksv.cell(row=i+1,column=10).value == 'SaaS' and ws_ksv.cell(row=i+1,column=4).value =='Protected' and\
-                                   ws_ksv.cell(row=i+1,column=8).value =='poweredOn' and ws_ksv.cell(row=i+1,column=14).value == 'vc-mgmt-01.sibintek.ru' else 0
+                                   ws_ksv.cell(row=i+1,column=8).value =='poweredOn' and ws_ksv.cell(row=i+1,column=14).value == 'vc-mgmt' else 0
     count_poweron_saas_vc_mgmt += 1 if ws_ksv.cell(row=i+1,column=10).value == 'SaaS' and ws_ksv.cell(row=i+1,column=8).value =='poweredOn' and ws_ksv.cell(row=i+1,column=14).value == 'vc-mgmt-01.sibintek.ru' else 0
     count_protected_iaas += 1 if ws_ksv.cell(row=i+1,column=10).value == 'IaaS' and ws_ksv.cell(row=i+1,column=4).value =='Protected'\
                             and ws_ksv.cell(row=i+1, column=3).fill != fill_cell_yellow_dns and ws_ksv.cell(row=i+1, column=4).fill != fill_cell_yellow else 0
@@ -696,13 +685,13 @@ ws_final.cell(row=5,column=1).value = 'Незащищены включенные
 ws_final.cell(row=5,column=2).value = count_notprotected
 ws_final.cell(row=6,column=1).value = 'SaaS включенные ВМ все инстансы'
 ws_final.cell(row=6,column=2).value = (count_poweron_saas_vc_res + count_poweron_saas_vc_mgmt)
-ws_final.cell(row=7,column=1).value = 'SaaS включенные ВМ vc-res-01 + hyper-v'
+ws_final.cell(row=7,column=1).value = 'SaaS включенные ВМ '
 ws_final.cell(row=7,column=2).value = count_poweron_saas_vc_res
 ws_final.cell(row=8,column=1).value = 'SaaS включенные ВМ vc-mgmt'
 ws_final.cell(row=8,column=2).value = count_poweron_saas_vc_mgmt
-ws_final.cell(row=9,column=1).value = 'AV.SaaS.all (SaaS включенные ВМ под защитой vc-res-01 + hyper-v)'
+ws_final.cell(row=9,column=1).value = 'AV.SaaS.all (SaaS включенные ВМ под защитой'
 ws_final.cell(row=9,column=2).value = count_protected_saas_vc_res
-ws_final.cell(row=10,column=1).value = 'AV.SaaS mgmt (SaaS включенные ВМ под защитой vc-mgmt)'
+ws_final.cell(row=10,column=1).value = 'AV.SaaS mgmt (SaaS включенные ВМ под защитой'
 ws_final.cell(row=10,column=2).value = count_protected_saas_vc_mgmt
 ws_final.cell(row=11,column=1).value = 'IaaS включенные ВМ'
 ws_final.cell(row=11,column=2).value = count_poweron_iaas
