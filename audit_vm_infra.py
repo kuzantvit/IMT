@@ -185,7 +185,7 @@ def get_data_from_vmm(filename='G:\\Департамент информацио�
     return vmm_name, vmm_dnsname, vmm_power_state, vmm_os_name, vmm_ip, vmm_cr_date, vmm_enviroment, vmm_type, vmm_description, vmm_metaname
 
 vmm_name, vmm_dnsname, vmm_power_state, vmm_os_name, vmm_ip, vmm_cr_date, vmm_enviroment, \
-                               vmm_type, vmm_description, vmm_metaname = get_data_from_vmm(filename='G:\\Департамент информационной безопасности\\14_ОЭСЗИ\\1_Отчеты\\АУДИТ ВМ\\script_infra\\input\\vmm_report.csv')
+                               vmm_type, vmm_description, vmm_metaname = get_data_from_vmm(filename='vmm_report.csv')
 '''
 # Запуск функции по выгрузке данных из VMware
 vm_name, vm_dnsname, vm_metaname, vm_os_name, vm_ip, vm_type, vm_annotation, vm_power_state, vm_env = get_vsphere_data(hosts, password, username)
@@ -222,7 +222,7 @@ def check_ksv_files(vm_name, vm_dnsname):
     ksv_status_agent_sec = []
     ksv_status = []
     # Загрузка отчетов из папки
-    wb_ksv = load_workbook('G:\\Департамент информационной безопасности\\14_ОЭСЗИ\\1_Отчеты\\АУДИТ ВМ\\script_infra\\input\\ksc_clouddc.xlsx')
+    wb_ksv = load_workbook('G:\\ksc_clouddc.xlsx')
     ws_ksv = wb_ksv['Details']
     vm_agent_dict ={}
     vm_soft_name_dict = {}
@@ -245,12 +245,12 @@ def check_ksv_files(vm_name, vm_dnsname):
                 vm_agent_dict.update({vm_name[i]:ws_ksv.cell(row=m+1,column=4).value})
                 vm_soft_name_dict.update({vm_name[i]:ws_ksv.cell(row=m+1,column=5).value})
                 vm_sec_name_dict.update({vm_name[i]:ws_ksv.cell(row=m+1,column=6).value})
-    wb_ksv.save('G:\\Департамент информационной безопасности\\14_ОЭСЗИ\\1_Отчеты\\АУДИТ ВМ\\script_infra\\input\\ksc_clouddc.xlsx')
+    wb_ksv.save('G:\\ksc_clouddc.xlsx')
 
     
     # Сравнение данных, ВМ из выгрузке, сравниваются ВМ из отчета, где совпадение ставится под защиту, для отчета из инфры
     
-    wb_ksv = load_workbook('G:\\Департамент информационной безопасности\\14_ОЭСЗИ\\1_Отчеты\\АУДИТ ВМ\\script_infra\\input\\ksc_infra.xlsx')
+    wb_ksv = load_workbook('G:\\ksc_infra.xlsx')
     ws_ksv = wb_ksv['Details']
     for i in range(len(vm_name)):
         for m in range(2666):
@@ -278,7 +278,7 @@ def check_ksv_files(vm_name, vm_dnsname):
             ksv_status.append('Да')
         else:
             ksv_status.append('Нет')
-    wb_ksv.save('G:\\Департамент информационной безопасности\\14_ОЭСЗИ\\1_Отчеты\\АУДИТ ВМ\\script_infra\\input\\ksc_infra.xlsx')
+    wb_ksv.save('G:\\ksc_infra.xlsx')
     return ksv_status, ksv_status_agent, ksv_status_soft_name, ksv_status_agent_sec
 
 
@@ -416,14 +416,7 @@ for i in range(len(vm_old_name)):
 
 # Список ВМ, которым не нужен АВЗ, в фале будут отмечены с графой не нужно.
 
-exception_dict =['02-INF-CRL', 'COEUS-11_restored', 'dozor', 'la-svm-hv05','la-svm-hv06', 'la-svm-hv07', 'la-svm-hv08', 'la-svm-HX02','la-svm-HX03', \
-                 'la-svm-HX04', 'vs-sib-mgt-lms-80.20', 'vs-sib-mgt-sms-80.40.infra.clouddc.ru', 'vs-sib-mgt-sms-80.20', 'vs-sib-mgt-lms-80.40.infra.clouddc.ru', \
-                 'cdc-mdls-a', 'cdc-mdms-a', 'cdc-proxy-01.clouddc.ru', 'cdc-proxy-02.clouddc.ru', 'cdc-vc-01.infra.clouddc.ru', 'cdc-vrl-log.infra.clouddc.ru', \
-                 'cdc-vrl-mon.infra.clouddc.ru', 'CUCM-SUB.clouddc.ru', 'CUCM.clouddc.ru', 'CUP-SUB.clouddc.ru', 'CUP.clouddc.ru', 'cvp.net.cdc', \
-                 'dc1-hp-ssmc.infra.clouddc.ru', 'dc1-hp-vsp.infra.clouddc.ru', 'dc1-str1-im-v5', 'infinimetrics4.infra.clouddc.ru', 'mx1.clouddc.ru',
-                 'mx2.clouddc.ru', 'sib-ibm-sc.sibintek.ru', 'sma.clouddc.ru', 'UCCX', 'dc-01.contoso.com', 'sql-01.contoso.com', 'sql-02.contoso.com', 'dozor.clouddc.ru', 'uccx', \
-                 'svm-la-22.infra.clouddc.ru', 'svm-la-21.infra.clouddc.ru', 'svm-la-23.infra.clouddc.ru', 'svm-la-03.infra.clouddc.ru', 'svm-la-06.infra.clouddc.ru', 'svm-la-02.infra.clouddc.ru', \
-                 'svm-la-03.infra.clouddc.ru', 'svm-la-06.infra.clouddc.ru', 'svm-la-04.infra.clouddc.ru', 'svm-la-01.infra.clouddc.ru', 'svm-la-07.infra.clouddc.ru', 'svm-la-05.infra.clouddc.ru']
+exception_dict =['02-INF-CRL']
 # Цикл для проставления исключений
 
 for i in range(999):
@@ -462,7 +455,7 @@ for i in range(len(vm_old_name)):
 ter = new_sheet.split('.')
 ret = '_'.join(ter)
 
-wb_ksv.save('G:\\Департамент информационной безопасности\\14_ОЭСЗИ\\1_Отчеты\\АУДИТ ВМ\\script_infra\\output\\CloudDC&INFRA ALL SRV and Antivirus_' + str(ret) + '.xlsx')
+wb_ksv.save('c:\\temp\test\\nd Antivirus_' + str(ret) + '.xlsx')
 
 wb_ksv = load_workbook(file_prev_audit)
 wb_ksv.remove(wb_ksv[new_sheet])
