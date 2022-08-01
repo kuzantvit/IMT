@@ -1,0 +1,88 @@
+query CheckAsset($host) from Sibintek_Assets {
+	host.ipaddress == $host
+    or host.fqdn == $host
+	or host.hostname == $host
+}
+
+query CheckSpecificValueWhitelist($host_name, $user_id, $specific_value) from Sibintek_MITRE_ATTCK_whitelist {
+    (host == $host_name or host == "*")
+    and (user_id == $user_id or user_id == "*")
+    and (specific_value == $specific_value or specific_value == "*")
+    and (rule == "SIB_Bruteforce_attempt_mult_acc_from_src" or rule == "*")
+}
+
+event run_powershell_ belt_file_rename:
+    key:
+        event_src.host
+    filter {
+		(object.type == "Get-ChildItem" or match(lower(object.type), "get-childitem") or object.type =="gci")
+		and match(lower(datafield5), "*rename-item*")
+		and status == "success"
+		and action == "execute"
+		and correlation_name == null
+		and event_src.title == "windows"
+		and exec_query("CheckAsset", [lower(event_src.host)])
+    }
+event run_powershell_ belt_file_changes:
+    key:
+        event_src.host
+    filter {
+		(object.type == "Get-Content" or match(lower(object.type), "get-content") or object.type =="gc")
+		and match(datafield5, "*replace*"))
+		and status == "success"
+		and action == "execute"
+		and correlation_name == null
+		and event_src.title == "windows"
+		and exec_query("CheckAsset", [lower(event_src.host)])
+    }
+	
+event object_modification:
+	key:
+		event_src
+	filter {
+	status =="success"
+	and object.property == "new security descriptor"
+	and msgid == "4670"
+	and event_src.title == "windows"
+	and action == "success"
+	and exec_query("CheckAsset", [lower(event_src.host)])
+	
+	}
+
+rule SIB_posh_belt_file_modification: (run_powershell_ belt_file_changes or run_powershell_ belt_file_rename) and object_modification
+    on run_powershell_ belt_file_changes
+    {
+        $event_src.host = event_src.host
+		$subject.name = subject.name
+		$object.type = object.type
+        $event_src.fqdn = event_src.fqdn
+        $event_src.hostname = event_src.hostname
+        $event_src.asset = event_src.asset
+        $event_src.title = event_src.title
+        $event_src.vendor = event_src.vendor
+        $subject.domain = subject.domain
+		$comand.text = datafield5
+    }
+    on run_powershell_ belt_file_rename
+    {
+        $event_src.host = event_src.host
+        $event_src.fqdn = event_src.fqdn
+		$subject.name = subject.name
+		$object.type = object.type
+		$comand.text = datafield5
+        $event_src.hostname = event_src.hostname
+        $event_src.asset = event_src.asset
+        $event_src.title = event_src.title
+        $event_src.vendor = event_src.vendor
+        $subject.domain = subject.domain
+    }
+
+emit {
+
+	$correlation_type = "incident"
+    $category.generic = "Attacks & Recon"
+    $category.high = "Attack"
+    $category.low = "Bruteforce"
+    $importance = "high"
+    $id = "SIB_posh_belt_file_modification"
+}
