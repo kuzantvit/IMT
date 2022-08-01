@@ -10,7 +10,7 @@ file_with_audit = r"U:\Tenable\reports\audit_vm.xlsx"
 #file_with_report = input("Введите путь к файлу с именем и расширением")
 file_with_report = r"U:\Tenable\reports\vulns_test.csv"
 
-def save_data_to_excel(*args, filename='G:\\Департамент информационной безопасности\\14_ОЭСЗИ\\1_Отчеты\\АУДИТ ВМ\\script_infra\\input\\test.xlsx', sheet_name='Main', **kwargs):
+def save_data_to_excel(*args, filename='G:\\АУДИТ ВМ\\script_infra\\input\\test.xlsx', sheet_name='Main', **kwargs):
     fill_cell_orange = PatternFill(start_color='f07233',
                end_color='f07233',
                fill_type='solid')
